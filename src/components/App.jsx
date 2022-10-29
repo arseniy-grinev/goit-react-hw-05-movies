@@ -28,25 +28,19 @@ class App extends Component {
 
     if (isUpdate) {
       this.setState({ status: 'pending' });
-      if (currentSearch !== newSearch) {
-        this.setState({ page: 1 });
-      }
 
       try {
-        console.log('запрос');
         const imageList = await API.getImages(newSearch, nextPage);
         this.setState(prevState => ({
           images: [...prevState.images, ...imageList],
           status: 'resolved',
         }));
         if (imageList.length === 0) {
-          console.log('не нашел');
           toast.error(
             'Sorry, there are no images matching your search query. Please, try again.'
           );
         }
       } catch (error) {
-        console.log('ошибка');
         toast.error('Something went wrong. Please, reload the page.');
         this.setState({ status: 'rejected' });
       }
@@ -55,7 +49,6 @@ class App extends Component {
 
   onFormSubmit = searchImage => {
     this.setState({ searchImage, images: [], page: 1 });
-    console.log('сабмит формы', this.state.searchImage);
   };
 
   onLoadBtnClick = () => {
@@ -65,7 +58,6 @@ class App extends Component {
   };
 
   onToggleModal = largeImageURL => {
-    console.log('модалка');
     this.setState(({ showModal }) => ({
       showModal: !showModal,
     }));
@@ -82,9 +74,7 @@ class App extends Component {
           <ImageGallery items={images} onClick={this.onToggleModal} />
         )}
         {status === 'pending' && <Loader />}
-        {(images.length === 12 || images.length > 12) && (
-          <Button onClick={this.onLoadBtnClick} />
-        )}
+        {images.length >= 12 && <Button onClick={this.onLoadBtnClick} />}
         {showModal && (
           <Modal onClose={this.onToggleModal}>
             <img src={largeImageModal} alt="" />
