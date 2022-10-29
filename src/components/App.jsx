@@ -65,6 +65,7 @@ class App extends Component {
   };
 
   onToggleModal = largeImageURL => {
+    console.log('модалка');
     this.setState(({ showModal }) => ({
       showModal: !showModal,
     }));
