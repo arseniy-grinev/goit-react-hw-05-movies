@@ -1,100 +1,97 @@
 import { React, Component } from 'react';
-import { nanoid } from 'nanoid';
-import FormAddContact from './FormAddContact';
-import SectionWrap from './SectionWrap';
-import ContactsList from './ContactsList';
-import FilterByName from './FilterByName';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import * as API from '../services/api';
+
+import Searchbar from './Searchbar';
+import ImageGallery from './ImageGallery';
+import Loader from './Loader';
+import Button from './Button';
+import Modal from './Modal';
 
 class App extends Component {
   state = {
-    contacts: [
-      // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      // { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      // { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      // { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
+    searchImage: '',
+    images: [],
+    page: 1,
+    status: 'idle',
+    showModal: false,
+    largeImageModal: null,
   };
 
-  componentDidMount() {
-    const contactsList = localStorage.getItem('contactsList');
-    const parsedContactsList = JSON.parse(contactsList);
+  async componentDidUpdate(_, prevState) {
+    const currentSearch = prevState.searchImage;
+    const newSearch = this.state.searchImage;
+    const currentPage = prevState.page;
+    const nextPage = this.state.page;
+    const isUpdate = currentSearch !== newSearch || currentPage !== nextPage;
 
-    if (parsedContactsList) {
-      this.setState({ contacts: parsedContactsList });
-    }
-  }
+    if (isUpdate) {
+      this.setState({ status: 'pending' });
+      if (currentSearch !== newSearch) {
+        this.setState({ page: 1 });
+      }
 
-  componentDidUpdate(prevState) {
-    const nextContactsList = this.state.contacts;
-    const prevContactsList = prevState.contacts;
-
-    if (nextContactsList !== prevContactsList) {
-      console.log(
-        'Обновилось поле contactsList, записываю ContactsList в хранилище'
-      );
-      localStorage.setItem('contactsList', JSON.stringify(nextContactsList));
-    }
-  }
-
-  addContact = ({ name, number }) => {
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-
-    const isExist = this.state.contacts.find(contact => contact.name === name);
-
-    isExist
-      ? alert(`${name} is already in the contacts`)
-      : this.setState(({ contacts }) => ({
-          contacts: [contact, ...contacts],
+      try {
+        console.log('запрос');
+        const imageList = await API.getImages(newSearch, nextPage);
+        this.setState(prevState => ({
+          images: [...prevState.images, ...imageList],
+          status: 'resolved',
         }));
+        if (imageList.length === 0) {
+          console.log('не нашел');
+          toast.error(
+            'Sorry, there are no images matching your search query. Please, try again.'
+          );
+        }
+      } catch (error) {
+        console.log('ошибка');
+        toast.error('Something went wrong. Please, reload the page.');
+        this.setState({ status: 'rejected' });
+      }
+    }
+  }
+
+  onFormSubmit = searchImage => {
+    this.setState({ searchImage, images: [], page: 1 });
+    console.log('сабмит формы', this.state.searchImage);
   };
 
-  deleteContact = contactId => {
+  onLoadBtnClick = () => {
     this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+      page: prevState.page + 1,
     }));
   };
 
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
-  };
-
-  getFilteredContacts = () => {
-    const { filter, contacts } = this.state;
-    const normalizedFilter = filter.toLowerCase();
-
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-  };
-
-  getSortedContacts = contacts => {
-    return contacts.sort((x, y) => x.name.localeCompare(y.name));
+  onToggleModal = largeImageURL => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+    this.setState({ largeImageModal: largeImageURL });
   };
 
   render() {
-    const { filter, contacts } = this.state;
-    const filteredContacts = this.getFilteredContacts(contacts);
-    const sortedContacts = this.getSortedContacts(filteredContacts);
+    const { images, status, showModal, largeImageModal } = this.state;
+
     return (
       <>
-        <SectionWrap title="Phonebook">
-          <FormAddContact onAddFormSubmit={this.addContact} />
-        </SectionWrap>
-        <SectionWrap title="Contacts">
-          <FilterByName value={filter} onChange={this.changeFilter} />
-          <ContactsList
-            contacts={sortedContacts}
-            deleteContact={this.deleteContact}
-          />
-        </SectionWrap>
+        <Searchbar onSubmit={this.onFormSubmit} />
+        {images.length > 0 && (
+          <ImageGallery items={images} onClick={this.onToggleModal} />
+        )}
+        {status === 'pending' && <Loader />}
+        {(images.length === 12 || images.length > 12) && (
+          <Button onClick={this.onLoadBtnClick} />
+        )}
+        {showModal && (
+          <Modal onClose={this.onToggleModal}>
+            <img src={largeImageModal} alt="" />
+          </Modal>
+        )}
+        <ToastContainer autoClose={3000} position="top-right" />
       </>
     );
   }
 }
-
 export default App;
