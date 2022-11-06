@@ -1,24 +1,25 @@
-
+import MovieDetails from "components/pages/MovieDetails";
 import { Route, Routes } from "react-router-dom";
 import SharedLayout from "./SharedLayout";
+import MovieCast from "./MovieCast";
+import MovieReviews from "./MovieReviews";
+import Movies from "components/pages/Movies/Movies";
+import Home from "./pages/Home";
 
-
-
- const App = () => {
-  return (
+ export const App = () => {
+   return (
+    
     <Routes>
       <Route path="/" element={<SharedLayout />}>
-        <Route index element={<div>Home</div>} />
-        <Route path="about" element={<div>About</div>}>
-          <Route path="mission" element={<div>Mission</div>} />
-          <Route path="team" element={<div>Team</div>} />
-          <Route path="reviews" element={<div>Reviews</div>} />
-        </Route>
-        <Route path="products" element={<div>Products</div>} />
-        <Route path="products/:id" element={<div>ProductsId</div>} />
+         <Route index element={<Home/>} />
+         <Route path="movies" element={<Movies/>}/>
+         <Route path="movies/:movieId" element={<MovieDetails/>}>
+            <Route path="cast" element={<MovieCast/>} />
+            <Route path="reviews" element={<MovieReviews/>} />
+         </Route>
       </Route>
     </Routes>
   );
 };
 
-export default App;
+// export default App;

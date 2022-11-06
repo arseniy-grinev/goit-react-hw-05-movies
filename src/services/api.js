@@ -1,15 +1,17 @@
 import axios from 'axios';
 
-const API_KEY = '30088439-f58bb35369039d74d15963769';
-const PER_PAGE = '12';
+const API_KEY = 'a8bcba5391671092ce877782368f60fd';
 
-axios.defaults.baseURL = 'https://pixabay.com/api';
+// const BASE_URL_IMG = 'https://image.tmdb.org/t/p/w200'
 
-export const getImages = async (search, page) => {
+axios.defaults.baseURL = 'https://api.themoviedb.org/3/';
+
+export const getTopMovies = async (search, page) => {
   const response = await axios.get(
-    `/?key=${API_KEY}&q=${search}&page=${page}&per_page=${PER_PAGE}&image_type=photo&orientation=horizontal`
+    `/trending/movie/week?api_key=${API_KEY}`
   );
-  return response.data.hits.map(({ id, webformatURL, largeImageURL }) => {
-    return { id, webformatURL, largeImageURL };
+
+  return response.data.results.map(({ id, poster_path, original_title }) => {
+    return { id, poster_path, original_title };
   });
 };
