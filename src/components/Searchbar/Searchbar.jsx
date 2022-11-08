@@ -1,16 +1,19 @@
-import { Wrapper, Icon, Input } from "./Searchbar.styled";
+import { Wrapper, Icon, Input, FormButton } from "./Searchbar.styled";
 
-const Searchbar = ({ value, onChange, onSubmit }) => {
+
+
+const Searchbar = ({ onSubmit }) => {
   return (
     <Wrapper onSubmit={onSubmit}>
-      <button type="submit">
+      <FormButton type="submit">
         <Icon />
-      </button>
+      </FormButton>
       
       <Input
         type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        name="query"
+        // value={value}
+        // onChange={(e) => onChange(e.target.value)}
       />
     </Wrapper>
   );

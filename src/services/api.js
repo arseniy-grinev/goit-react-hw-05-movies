@@ -34,7 +34,7 @@ export const getMovieRevievsById = async (id) => {
   return response.data.results;
 };
 
-export const getMovieRevievsByQuery = async ({query}) => {
+export const getMoviesByQuery = async (query) => {
   const response = await axios.get(
     
     `/search/movie/?api_key=${API_KEY}&query=${query}&page=1&language=en-US&include_adult=false`

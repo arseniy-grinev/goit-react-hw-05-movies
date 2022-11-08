@@ -1,5 +1,5 @@
 import { getMovieCastById } from "services/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 
 import { useParams } from "react-router-dom";
 
@@ -36,10 +36,12 @@ const MovieCast = () => {
 
     return <div>
         <ul>
-            {cast.cast.map(({ id, name, profile_path }) => (
+            {cast.cast.map(({ id, name, profile_path, character }) => (
                 <li key={id}>
                     <img src={`https://image.tmdb.org/t/p/w200${profile_path}`} alt={`${name}`} />
-                    <p>{name}</p>
+                    <p>Name: {name}</p>
+                    <p>Character: {character}</p>
+
                 </li>
             ))}
         </ul>

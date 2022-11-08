@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import MoviesList from "components/MoviesList";
 import Loader from "components/Loader";
-const { Link } = require("./Home.styled")
+// const { Link } = require("./Home.styled")
 
 
 function Home() {
@@ -35,7 +35,7 @@ function Home() {
     return (<main>
         {status === 'penging' && <Loader/>}
         {trandMovies.length > 0 && <MoviesList movies={trandMovies} />}
-        <Link to="movies/:movieId"> Movie Detail</Link>
+        {/* <Link to="movies/:movieId"> Movie Detail</Link> */}
         <ToastContainer autoClose={3000} position="top-right" />
     </main>)
 }
