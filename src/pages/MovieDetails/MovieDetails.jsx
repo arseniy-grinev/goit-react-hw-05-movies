@@ -10,7 +10,6 @@ import Loader from "components/Loader";
 const MovieDetails = () => {
     const location = useLocation();
     const {movieId} = useParams()
-    console.log(movieId);
     const [movie, setMovie] = useState(null);
     const [status, setStatus] = useState('idle');
     const backLinkHref = location.state?.from ?? "/movies";
@@ -44,8 +43,7 @@ const MovieDetails = () => {
     return <>
         {status === 'penging' && <Loader />}
         {status === 'resolved' && <div>
-             <BackLink to={backLinkHref} label={"назад"} />
-                
+             <BackLink to={backLinkHref} label={"назад"} />  
             <Wrapper>
                 <img src={posterUrl} alt="" />
                 <InfoWrapper>
@@ -61,14 +59,11 @@ const MovieDetails = () => {
                     </GenreWrapper>
                 </InfoWrapper>    
             </Wrapper>
-            
                 <Link to="cast">Cast</Link>
                 <Link to="reviews">Reviews</Link>
                 <Outlet/>
-           
         </div>}
-         
-    <ToastContainer autoClose={3000} position="top-right" /></>
+        <ToastContainer autoClose={3000} position="top-right" /></>
 }
 
 export default MovieDetails;

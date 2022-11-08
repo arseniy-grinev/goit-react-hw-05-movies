@@ -55,16 +55,10 @@ export default function Movies() {
         renderMoviesByQuery()
     }, [query])
 
-    
-    
-
-
     return <main>
-        {status === 'penging' && <Loader/>}
-        <Searchbar onSubmit={onSearch} />
-        {movies  && <MoviesList movies={movies} />}
-        {/* <Link to="movies/:movieId"> Movie Detail</Link> */}
-        <ToastContainer autoClose={3000} position="top-right" />
-        
-    </main>
+            {status === 'penging' && <Loader/>}
+            <Searchbar onSubmit={onSearch} />
+            {movies  && <MoviesList movies={movies} />}
+            <ToastContainer autoClose={3000} position="top-right" />
+        </main>
 }
