@@ -31,9 +31,9 @@ export default function Movies() {
     }
 
     useEffect(() => {
-        if (!query) {
-            return
-        }
+        // if (!query) {
+        //     return
+        // }
 
         async function renderMoviesByQuery() {
             setStatus('pending');
