@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_KEY = 'a8bcba5391671092ce877782368f60fd';
 
-axios.defaults.baseURL = 'http://api.themoviedb.org/3/';
+axios.defaults.baseURL = 'https://api.themoviedb.org/3/';
 
 export const getTopMovies = async () => {
   const response = await axios.get(
