@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import MoviesList from "components/MoviesList";
 import Loader from "components/Loader";
 
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function Home() {
     const [trandMovies, setTrandMovies] = useState([]);

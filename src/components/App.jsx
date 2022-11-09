@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 import SharedLayout from "./SharedLayout";
 import Home from "../pages/Home";
 

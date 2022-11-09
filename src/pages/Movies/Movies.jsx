@@ -1,9 +1,10 @@
 import Searchbar from "components/Searchbar"
-// import { Link } from "./Movies.styled"
 import { useSearchParams } from "react-router-dom"
 import { useState, useEffect } from "react";
 import { getMoviesByQuery } from "services/api";
 import { ToastContainer, toast } from "react-toastify";
+
+import 'react-toastify/dist/ReactToastify.css';
 import MoviesList from "components/MoviesList";
 import Loader from "components/Loader";
 
