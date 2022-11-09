@@ -13,7 +13,6 @@ const MovieReviews = () => {
             try {
                 const reviewsById = await getMovieRevievsById(movieId);
                 setReviews([...reviewsById]);
-                console.log('нашли reviewsById')
                 
             } catch (error) {
                 // console.log('reject movie')
@@ -23,7 +22,6 @@ const MovieReviews = () => {
         }
 
         renderRevievsById();
-        console.log("zbs rev`")
     },[movieId]);
     
     if (reviews.length === 0) {

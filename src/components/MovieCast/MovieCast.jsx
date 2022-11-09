@@ -13,7 +13,6 @@ const MovieCast = () => {
             try {
                 const castById = await getMovieCastById(movieId);
                 setCast(castById);
-                console.log('нашли cast')
                 
             } catch (error) {
                 // console.log('reject movie')
@@ -23,7 +22,6 @@ const MovieCast = () => {
         }
 
         renderCastById();
-        console.log("zbs`")
     },[movieId]);
     
     if (!cast) {
