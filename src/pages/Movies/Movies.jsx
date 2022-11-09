@@ -31,20 +31,19 @@ export default function Movies() {
     }
 
     useEffect(() => {
-        // if (!query) {
-        //     return
-        // }
+        if (!query) {
+            return
+        }
 
         async function renderMoviesByQuery() {
             setStatus('pending');
             try {
                 const moviesList = await getMoviesByQuery(query);
+                setMovies([...moviesList]);
                 if (moviesList.length === 0) {
                     toast.error('Something went wrong. Please, reload the page.');
                     setStatus('rejected');
                 }
-                console.log(moviesList)
-                setMovies(moviesList);
                 setStatus('resolved');
             } catch (error) {
                 toast.error('Something went wrong. Please, reload the page.');
